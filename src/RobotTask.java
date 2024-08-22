@@ -1,27 +1,41 @@
-//import the becker library
 import becker.robots.*;
+import java.util.Random;
 /**
-*RobotTask class
-*@author Gabriel Fontaine
-*@version 2024
+* RobotTask Class
+*
+* @author
+* @version
 */
-public class RobotTask
-{
+public class RobotTask {
+	public City square;
 	/**
-	 *run method
-	 *@param none
-	 *return void
+	 * run method
+	 *
+	 * @param none
+	 * @return void
 	 */
-	public void run ()
-	{
-		//construct city
-		MazeCity mc = new MazeCity (8, 8, 1, 1); // new random maze
-		// new MazeBot reference starting in middle of maze facing SOUTH
-		MazeBot bot = new MazeBot (mc, 3, 4, Direction.SOUTH, 0); // starts at street 3, avenue 4 facing south
+	public void run() {
+		// constructs a new random Maze City
+		MazeCity square = new MazeCity(10, 10, 1, 1); //random maze city
+		square.showThingCounts(true);
 		
-		do { // loops initially
-			bot.solve(); //instructs the bot to solve the maze
-		} while (bot.getMazeSolved() == false); // provides the initial looping for the process of the maze being solved and navigated by the robot, with this loop being necessary due to the fact that it is impossible to recurse this method within itself otherwise, as each time the robot functionally has finished solving the maze in a simulation, the robot requires another reference as to which object is being utilized in the process of simulating and calling the same method
+		Random rG= new Random();  //random generator
+		int rA = rG.nextInt(10); //sets random avenue
+		int rS = rG.nextInt(10); //sets random street
+		Thing t = new Thing(square,rA,rS);  //places thing at random location
 		
-	}
-}
+		// initially creating an object called bot
+		MazeBot bot = new MazeBot(square, 4, 3, Direction.SOUTH); // street = y, avenue = x
+		
+		
+		do { // a loop which is going to be running until it has picked up the thing hidden within the maze
+			bot.solve(); // solve is a method telling the robot to try getting to the thing in the maze
+		} while (bot.countThingsInBackpack() < 1);
+		
+		
+		
+	} // end run
+	
+	
+} // end class
+
